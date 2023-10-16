@@ -1,0 +1,43 @@
+version: '3.0'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: mypass
+      MYSQL_DATABASE: collectorDB
+      MYSQL_USER: collectorDB
+      MYSQL_PASSWORD: mypass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  collector:
+    build:
+      context: .
+      dockerfile: collector
+    container_name: collector
+    restart: always
+    depends_on:
+      - mysql_db
+
+  save_to_DB:
+    build:
+      context: .
+      dockerfile: save_to_DB
+    container_name: save_to_DB
+    restart: always
+
+  flask_web:
+    build:
+      context: .
+      dockerfile: flask_web
+    container_name: flask_web
+    restart: always
+    ports:
+      - "3000:3000"
+
+volumes:
+  mysql_data:

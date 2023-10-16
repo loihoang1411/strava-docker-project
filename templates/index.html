@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Strava Activities</title>
+</head>
+<body>
+    <h1>Strava Activities</h1>
+    <table>
+        <thead>
+            <tr>
+		<th>ID</th>
+                <th>Activity_Name</th>
+		<th>First_Name</th>
+		<th>Last_Name</th>
+                <th>Distance</th>
+		<th>Moving_Time</th>
+		<th>Elapsed_Time<th>
+                <th>Elevation_Gain<th>
+                <th>Sport_Type<th>
+	        <th>Workout_Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row[0]  }}</td>
+                <td>{{ row[1]  }}</td>
+                <td>{{ row[2]  }}</td>
+		<td>{{ row[3]  }}</td>
+                <td>{{ row[4]  }}</td>
+		<td>{{ row[5]  }}</td>
+		<td>{{ row[6]  }}</td>
+                <td>{{ row[7]  }}</td>
+                <td>{{ row[8]  }}</td>
+		<td>{{ row[9]  }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
