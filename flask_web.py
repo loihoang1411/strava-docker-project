@@ -4,8 +4,8 @@ import mysql.connector
 app = Flask(__name__)
 
 # MySQL database configuration
-DB_HOST = "localhost"
-DB_USER = "collectorDB"
+DB_HOST = "172.18.0.2"
+DB_USER = "root"
 DB_PASSWORD = "mypass"
 DB_NAME = "collectorDB"
 
@@ -27,5 +27,5 @@ def display_data():
     return render_template('index.html', data=rows)
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=3000)
 

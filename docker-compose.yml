@@ -1,43 +1,51 @@
-version: '3.0'
-
+version: '3'
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:8.0.34
     container_name: mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: mypass
       MYSQL_DATABASE: collectorDB
-      MYSQL_USER: collectorDB
-      MYSQL_PASSWORD: mypass
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql:/var/lib/mysql
 
-  collector:
+    networks:
+      strava:
+        ipv4_address: 172.18.0.2
+
+  call_and_save:
+    image: call_and_save
     build:
       context: .
-      dockerfile: collector
-    container_name: collector
+      dockerfile: Dockerfile.call_and_save
     restart: always
-    depends_on:
-      - mysql_db
-
-  save_to_DB:
-    build:
-      context: .
-      dockerfile: save_to_DB
-    container_name: save_to_DB
-    restart: always
+    networks:
+      strava:
+        ipv4_address: 172.18.0.4
 
   flask_web:
+    image: flask_web
     build:
       context: .
-      dockerfile: flask_web
-    container_name: flask_web
+      dockerfile: Dockerfile.flask_web
     restart: always
     ports:
       - "3000:3000"
+    networks:
+      strava:
+        ipv4_address: 172.18.0.3
+
+networks:
+  strava:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
 
 volumes:
-  mysql_data:
+   mysql:
+     external: true
